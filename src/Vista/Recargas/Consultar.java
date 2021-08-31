@@ -2,11 +2,15 @@ package Vista.Recargas;
 
 import Controlador.CLlave;
 import Controlador.CNequi;
-import Controlador.CRecargas;
+import Controlador.CSoluciones;
+import Controlador.CTigo;
+import Controlador.CTuRed;
 import DAO.GenericDomainTableModel;
 import Modelo.MNequi;
-import Modelo.MRecargas;
+import Modelo.MSoluciones;
+import Modelo.MTigo;
 import Modelo.MTuLlave;
+import Modelo.MTuRed;
 import java.awt.event.ActionEvent;
 import java.sql.Date;
 import java.text.ParseException;
@@ -18,7 +22,9 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 import tablas.TLlave;
 import tablas.TNequi;
-import tablas.TRecargas;
+import tablas.TSoluciones;
+import tablas.TTigo;
+import tablas.TTuRed;
 import tablas.TableCellListener;
 
 /**
@@ -79,22 +85,57 @@ public class Consultar extends javax.swing.JFrame {
                         tModel.model.addRows(llave);
                         tableData.setModel(tModel.getModelo());
                     break;
-                    default:
-                        GenericDomainTableModel<MRecargas> modelR = (GenericDomainTableModel) tableData.getModel();
-                        List<MRecargas> recarga = modelR.getDomainObjects();
+                    case "tuRed":
+                        GenericDomainTableModel<MTuRed> modelR = (GenericDomainTableModel) tableData.getModel();
+                        List<MTuRed> recarga = modelR.getDomainObjects();
                         int k = 0;
                         while(k<recarga.size()){
                             if(k==0){
-                                recarga.get(k).calcular(txtTitulo.getText());
+                                recarga.get(k).calcular();
                             }
                             else{
-                                recarga.get(k).calcular(txtTitulo.getText(),recarga.get(k-1));
+                                recarga.get(k).calcular(recarga.get(k-1));
                             }
                             k++;
                         }
-                        TRecargas rModel = new TRecargas();
+                        TTuRed rModel = new TTuRed();
                         rModel.model.addRows(recarga);
                         tableData.setModel(rModel.getModelo());
+                    break;
+                    case "tigo":
+                        GenericDomainTableModel<MTigo> modelTi = (GenericDomainTableModel) tableData.getModel();
+                        List<MTigo> tigo = modelTi.getDomainObjects();
+                        int t = 0;
+                        while(t<tigo.size()){
+                            if(t==0){
+                                tigo.get(t).calcular();
+                            }
+                            else{
+                                tigo.get(t).calcular(tigo.get(t-1));
+                            }
+                            t++;
+                        }
+                        TTigo tiModel = new TTigo();
+                        tiModel.model.addRows(tigo);
+                        tableData.setModel(tiModel.getModelo());
+                    break;
+                    case "soluciones":
+                        GenericDomainTableModel<MSoluciones> modelS = (GenericDomainTableModel) tableData.getModel();
+                        List<MSoluciones> soluciones = modelS.getDomainObjects();
+                        int s = 0;
+                        while(s<soluciones.size()){
+                            if(s==0){
+                                soluciones.get(s).calcular();
+                            }
+                            else{
+                                soluciones.get(s).calcular(soluciones.get(s-1));
+                            }
+                            s++;
+                        }
+                        TSoluciones sModel = new TSoluciones();
+                        sModel.model.addRows(soluciones);
+                        tableData.setModel(sModel.getModelo());
+                    break;   
                 }
             }
         };
@@ -323,24 +364,63 @@ public class Consultar extends javax.swing.JFrame {
                     Logger.getLogger(Consultar.class.getName()).log(Level.SEVERE, null, ex);
                 } 
             break;
-            default:
+            case "tuRed":
                 try {
-                    TRecargas model = new TRecargas();
+                    TTuRed model = new TTuRed();
                     Date fechaInicial = new Date(dateInicial.getDateFormat().parse(dateInicial.getText()).getTime());
                     Date fechaFinal = new Date(dateFinal.getDateFormat().parse(dateFinal.getText()).getTime());
-                    model.model.addRows(new CRecargas().ConsultarRango(fechaInicial, fechaFinal, boxPlataforma.getSelectedItem().toString()));
+                    model.model.addRows(new CTuRed().ConsultarRango(fechaInicial, fechaFinal));
                     tableData.setModel(model.getModelo());
                     txtCantidad.setText(model.model.getRowCount()+"");
                     txtTitulo.setText(boxPlataforma.getSelectedItem().toString());
                     btnActualizar.setEnabled(true);
-                    List<Long> resultados = new CRecargas().total(fechaInicial, fechaFinal,boxPlataforma.getSelectedItem().toString());
-                    MRecargas resul = new MRecargas(resultados,fechaInicial);
-                    TRecargas suma = new TRecargas();
+                    List<Long> resultados = new CTuRed().total(fechaInicial, fechaFinal,boxPlataforma.getSelectedItem().toString());
+                    MTuRed resul = new MTuRed(resultados,fechaInicial);
+                    TTuRed suma = new TTuRed();
                     suma.model.addRow(resul);
                     tableResults.setModel(suma.getModelo());
                 } catch (ParseException ex) {
                     Logger.getLogger(Consultar.class.getName()).log(Level.SEVERE, null, ex);
-                } 
+                }
+            break;
+            case "tigo":
+                try {
+                    TTigo model = new TTigo();
+                    Date fechaInicial = new Date(dateInicial.getDateFormat().parse(dateInicial.getText()).getTime());
+                    Date fechaFinal = new Date(dateFinal.getDateFormat().parse(dateFinal.getText()).getTime());
+                    model.model.addRows(new CTigo().ConsultarRango(fechaInicial, fechaFinal));
+                    tableData.setModel(model.getModelo());
+                    txtCantidad.setText(model.model.getRowCount()+"");
+                    txtTitulo.setText(boxPlataforma.getSelectedItem().toString());
+                    btnActualizar.setEnabled(true);
+                    List<Long> resultados = new CTigo().total(fechaInicial, fechaFinal,boxPlataforma.getSelectedItem().toString());
+                    MTigo resul = new MTigo(resultados,fechaInicial);
+                    TTigo suma = new TTigo();
+                    suma.model.addRow(resul);
+                    tableResults.setModel(suma.getModelo());
+                } catch (ParseException ex) {
+                    Logger.getLogger(Consultar.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            break;
+            case "soluciones":
+                try {
+                    TSoluciones model = new TSoluciones();
+                    Date fechaInicial = new Date(dateInicial.getDateFormat().parse(dateInicial.getText()).getTime());
+                    Date fechaFinal = new Date(dateFinal.getDateFormat().parse(dateFinal.getText()).getTime());
+                    model.model.addRows(new CSoluciones().ConsultarRango(fechaInicial, fechaFinal));
+                    tableData.setModel(model.getModelo());
+                    txtCantidad.setText(model.model.getRowCount()+"");
+                    txtTitulo.setText(boxPlataforma.getSelectedItem().toString());
+                    btnActualizar.setEnabled(true);
+                    List<Long> resultados = new CSoluciones().total(fechaInicial, fechaFinal,boxPlataforma.getSelectedItem().toString());
+                    MSoluciones resul = new MSoluciones(resultados,fechaInicial);
+                    TSoluciones suma = new TSoluciones();
+                    suma.model.addRow(resul);
+                    tableResults.setModel(suma.getModelo());
+                } catch (ParseException ex) {
+                    Logger.getLogger(Consultar.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            break;  
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
@@ -376,18 +456,45 @@ public class Consultar extends javax.swing.JFrame {
                 }
                 JOptionPane.showMessageDialog(this,"Listo");
             break;
-            default:
+            case "tuRed":
                 if(!txtTitulo.getText().isEmpty()){
-                    GenericDomainTableModel<MRecargas> modelR = (GenericDomainTableModel) tableData.getModel();
-                    List<MRecargas> recar = modelR.getDomainObjects();
-                    for(MRecargas ne:recar){
-                        boolean reca = new CRecargas().Actualizar(ne,txtTitulo.getText());
+                    GenericDomainTableModel<MTuRed> modelR = (GenericDomainTableModel) tableData.getModel();
+                    List<MTuRed> recar = modelR.getDomainObjects();
+                    for(MTuRed ne:recar){
+                        boolean reca = new CTuRed().Actualizar(ne);
                         if(!reca){
                             JOptionPane.showMessageDialog(this,"La fecha: "+ne.getFecha()+" no se actualizó");
                         }
                     }
                     JOptionPane.showMessageDialog(this,"Listo");
                 }
+            break;
+            case "tigo":
+                if(!txtTitulo.getText().isEmpty()){
+                    GenericDomainTableModel<MTigo> modelR = (GenericDomainTableModel) tableData.getModel();
+                    List<MTigo> recar = modelR.getDomainObjects();
+                    for(MTigo ne:recar){
+                        boolean reca = new CTigo().Actualizar(ne);
+                        if(!reca){
+                            JOptionPane.showMessageDialog(this,"La fecha: "+ne.getFecha()+" no se actualizó");
+                        }
+                    }
+                    JOptionPane.showMessageDialog(this,"Listo");
+                }
+            break;
+            case "soluciones":
+                if(!txtTitulo.getText().isEmpty()){
+                    GenericDomainTableModel<MSoluciones> modelR = (GenericDomainTableModel) tableData.getModel();
+                    List<MSoluciones> recar = modelR.getDomainObjects();
+                    for(MSoluciones ne:recar){
+                        boolean reca = new CSoluciones().Actualizar(ne);
+                        if(!reca){
+                            JOptionPane.showMessageDialog(this,"La fecha: "+ne.getFecha()+" no se actualizó");
+                        }
+                    }
+                    JOptionPane.showMessageDialog(this,"Listo");
+                }
+            break;
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 

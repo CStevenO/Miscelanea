@@ -1,7 +1,7 @@
 package Modelo;
 
 import Controlador.CLlave;
-import Controlador.CRecargas;
+import Controlador.CSoluciones;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
@@ -82,7 +82,7 @@ public class MTuLlave {
         }
         else{
             MTuLlave llave = new CLlave().Consultar(fecha);
-            MRecargas solu = new CRecargas().Consultar(fecha,"soluciones");
+            MSoluciones solu = new CSoluciones().Consultar(fecha);
             if(recarga<0){
                 new CLlave().setTope(fecha, new CLlave().getTope()-recarga);
                 llave.setCaja(llave.getCaja()+llave.getRecargas());
@@ -103,7 +103,7 @@ public class MTuLlave {
                 }
                 solu.setCaja(solu.getCaja()+recarga);
                 boolean reca = new CLlave().Actualizar(llave);
-                boolean reca2 = new CRecargas().Actualizar(solu,"soluciones");
+                boolean reca2 = new CSoluciones().Actualizar(solu);
                 reca = reca && reca2;
                 return reca;
             }

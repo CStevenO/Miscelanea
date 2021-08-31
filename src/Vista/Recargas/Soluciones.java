@@ -1,7 +1,8 @@
 package Vista.Recargas;
 
-import Controlador.CRecargas;
-import Modelo.MRecargas;
+
+import Controlador.CSoluciones;
+import Modelo.MSoluciones;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.logging.Level;
@@ -22,8 +23,8 @@ public class Soluciones extends javax.swing.JFrame {
         btnIngresar.setEnabled(false);
         try {
             Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
-            MRecargas recarga = new CRecargas().Consultar(sqlDate, "soluciones");
-            recarga.calcular("soluciones");
+            MSoluciones recarga = new CSoluciones().Consultar(sqlDate);
+            recarga.calcular();
             txtPagado.setText(recarga.getPagado()+"");
             txtRecargado.setText(recarga.getRecargado()+"");
             txtDebe.setText(recarga.getDebe()+"");
@@ -33,6 +34,8 @@ public class Soluciones extends javax.swing.JFrame {
             txtCaja.setText(recarga.getCaja()+"");
             txtSugerencia.setText(recarga.getSugerencia()+"");
             txtRetiro.setText(recarga.getRetiro()+"");
+            txtFactura.setText(recarga.getFactura()+"");
+            txtGFac.setText(recarga.getGananciaFac()+"");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,"Error: "+e);
         }
@@ -47,6 +50,8 @@ public class Soluciones extends javax.swing.JFrame {
         txtCaja.setText(0+"");
         txtSugerencia.setText(0+"");
         txtRetiro.setText(0+"");
+        txtFactura.setText(0+"");
+        txtGFac.setText(0+"");
     }
 
     /**
@@ -84,6 +89,10 @@ public class Soluciones extends javax.swing.JFrame {
         btnVolver = new javax.swing.JButton();
         btnTrasladar = new javax.swing.JButton();
         txtFecha = new datechooser.beans.DateChooserCombo();
+        txtFactura = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        txtGFac = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Soluciones en Red");
@@ -211,6 +220,10 @@ public class Soluciones extends javax.swing.JFrame {
 
         txtFecha.setFormat(2);
 
+        jLabel11.setText("Factura");
+
+        jLabel12.setText("Ganancia Fac.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -218,30 +231,6 @@ public class Soluciones extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9))
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPagado)
-                            .addComponent(txtRecargado)
-                            .addComponent(txtDebe)
-                            .addComponent(txtVentas)
-                            .addComponent(txtSaldo)
-                            .addComponent(txtGanancias)
-                            .addComponent(txtCaja)
-                            .addComponent(txtSugerencia)
-                            .addComponent(txtRetiro)
-                            .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -256,7 +245,35 @@ public class Soluciones extends javax.swing.JFrame {
                                 .addComponent(btnActualizar)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnEliminar)))
-                        .addGap(0, 12, Short.MAX_VALUE)))
+                        .addGap(0, 12, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel12))
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPagado)
+                            .addComponent(txtRecargado)
+                            .addComponent(txtDebe)
+                            .addComponent(txtVentas)
+                            .addComponent(txtSaldo)
+                            .addComponent(txtGanancias)
+                            .addComponent(txtCaja)
+                            .addComponent(txtSugerencia)
+                            .addComponent(txtRetiro)
+                            .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtFactura)
+                            .addComponent(txtGFac))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -302,13 +319,21 @@ public class Soluciones extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(txtRetiro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtGFac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIngresar)
                     .addComponent(btnConsultar)
                     .addComponent(btnActualizar)
                     .addComponent(btnEliminar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVolver)
                     .addComponent(btnTrasladar))
@@ -325,10 +350,10 @@ public class Soluciones extends javax.swing.JFrame {
     private void btnTrasladarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrasladarActionPerformed
         try {
             Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
-            MRecargas recarga = new CRecargas().Consultar(sqlDate, "soluciones");
+            MSoluciones recarga = new CSoluciones().Consultar(sqlDate);
             recarga.setSaldo(recarga.getSaldo()+recarga.getGanancias());
             recarga.setGanancias(0);
-            boolean reca = new CRecargas().Actualizar(recarga, "soluciones");
+            boolean reca = new CSoluciones().Actualizar(recarga);
             String mensaje = reca?"Saldo Transladados":"Recarga NO Transladados";
             limpiar();
             JOptionPane.showMessageDialog(this,mensaje);
@@ -339,7 +364,7 @@ public class Soluciones extends javax.swing.JFrame {
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         try {
-            MRecargas recarga = new MRecargas();
+            MSoluciones recarga = new MSoluciones();
             Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
             recarga.setFecha(sqlDate);
             recarga.setCaja(Long.parseLong(txtCaja.getText()));
@@ -351,25 +376,27 @@ public class Soluciones extends javax.swing.JFrame {
             recarga.setSaldo(Long.parseLong(txtSaldo.getText()));
             recarga.setSugerencia(Long.parseLong(txtSugerencia.getText()));
             recarga.setVentas(Long.parseLong(txtVentas.getText()));
-            recarga.calcular("soluciones");
-            boolean reca = new CRecargas().Insertar(recarga, "soluciones");
+            recarga.setFactura(Long.parseLong(txtFactura.getText()));
+            recarga.setGananciaFac(Long.parseLong(txtGFac.getText()));
+            recarga.calcular();
+            boolean reca = new CSoluciones().Insertar(recarga);
             String mensaje = reca?"Recarga Registrada":"Recarga NO Registrada";
             limpiar();
             JOptionPane.showMessageDialog(this,mensaje);
             btnIngresar.setEnabled(false);
         } catch (ParseException ex) {
-            Logger.getLogger(TuRed.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Soluciones.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try {
             Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
-            boolean reca = new CRecargas().Eliminar(sqlDate, "soluciones");
+            boolean reca = new CSoluciones().Eliminar(sqlDate, "soluciones");
             String mensaje = reca?"Recarga Eliminada":"Recarga NO Eliminada";
             JOptionPane.showMessageDialog(this,mensaje);
         } catch (ParseException ex) {
-            Logger.getLogger(TuRed.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Soluciones.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -381,8 +408,8 @@ public class Soluciones extends javax.swing.JFrame {
                 btnConsultar.setEnabled(false);
                 btnTrasladar.setEnabled(false);
                 Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
-                MRecargas recarga = new CRecargas().Consultar(sqlDate, "soluciones");
-                recarga.calcular("soluciones");
+                MSoluciones recarga = new CSoluciones().Consultar(sqlDate);
+                recarga.calcular();
                 txtPagado.setText(recarga.getPagado()+"");
                 txtRecargado.setText(recarga.getRecargado()+"");
                 txtDebe.setText(recarga.getDebe()+"");
@@ -392,6 +419,8 @@ public class Soluciones extends javax.swing.JFrame {
                 txtCaja.setText(recarga.getCaja()+"");
                 txtSugerencia.setText(recarga.getSugerencia()+"");
                 txtRetiro.setText(recarga.getRetiro()+"");
+                txtFactura.setText(recarga.getFactura()+"");
+                txtGFac.setText(recarga.getGananciaFac()+"");
             } catch (ParseException ex) {
                 Logger.getLogger(TuRed.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -402,7 +431,7 @@ public class Soluciones extends javax.swing.JFrame {
                 btnEliminar.setEnabled(true);
                 btnConsultar.setEnabled(true);
                 btnTrasladar.setEnabled(true);
-                MRecargas recarga = new MRecargas();
+                MSoluciones recarga = new MSoluciones();
                 Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
                 recarga.setFecha(sqlDate);
                 recarga.setCaja(Long.parseLong(txtCaja.getText()));
@@ -414,13 +443,15 @@ public class Soluciones extends javax.swing.JFrame {
                 recarga.setSaldo(Long.parseLong(txtSaldo.getText()));
                 recarga.setSugerencia(Long.parseLong(txtSugerencia.getText()));
                 recarga.setVentas(Long.parseLong(txtVentas.getText()));
-                recarga.calcular("soluciones");
-                boolean reca = new CRecargas().Actualizar(recarga, "soluciones");
+                recarga.setFactura(Long.parseLong(txtFactura.getText()));
+                recarga.setGananciaFac(Long.parseLong(txtGFac.getText()));
+                recarga.calcular();
+                boolean reca = new CSoluciones().Actualizar(recarga);
                 String mensaje = reca?"Recarga Actualizada":"Recarga NO Actualizada";
                 limpiar();
                 JOptionPane.showMessageDialog(this,mensaje);
             } catch (ParseException ex) {
-                Logger.getLogger(TuRed.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Soluciones.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
@@ -550,6 +581,8 @@ public class Soluciones extends javax.swing.JFrame {
     private javax.swing.JButton btnVolver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -560,7 +593,9 @@ public class Soluciones extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField txtCaja;
     private javax.swing.JTextField txtDebe;
+    private javax.swing.JTextField txtFactura;
     private datechooser.beans.DateChooserCombo txtFecha;
+    private javax.swing.JTextField txtGFac;
     private javax.swing.JTextField txtGanancias;
     private javax.swing.JTextField txtPagado;
     private javax.swing.JTextField txtRecargado;

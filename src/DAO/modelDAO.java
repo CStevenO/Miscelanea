@@ -1,11 +1,13 @@
 package DAO;
 
 import Modelo.MNequi;
-import Modelo.MRecargas;
 import Modelo.MTuLlave;
 import java.util.List;
 import DataBase.DataConnection;
 import Modelo.MImpresion;
+import Modelo.MSoluciones;
+import Modelo.MTigo;
+import Modelo.MTuRed;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,11 +21,11 @@ import java.text.DecimalFormat;
  */
 public class modelDAO extends DataConnection implements InterDAO{
     @Override
-    public boolean insertar(MRecargas intRecarga, String plataforma) {
-        if(!(intRecarga==null || plataforma.isEmpty())){
+    public boolean insertar(MTuRed intRecarga) {
+        if(!(intRecarga==null)){
             try {
                 conectar();
-                String tx = "insert into "+ plataforma +" (fecha,pagado,recargado,debe,ventas,saldo,ganancias,caja,sugerencia,retiro) values(?,?,?,?,?,?,?,?,?,?)";
+                String tx = "insert into tuRed (fecha,pagado,recargado,debe,ventas,saldo,ganancias,caja,sugerencia,retiro) values(?,?,?,?,?,?,?,?,?,?)";
                 PreparedStatement sentencia = conexion.prepareStatement(tx);
                 sentencia.setDate(1, intRecarga.getFecha());
                 sentencia.setLong(2, intRecarga.getPagado());
@@ -35,6 +37,69 @@ public class modelDAO extends DataConnection implements InterDAO{
                 sentencia.setLong(8, intRecarga.getCaja());
                 sentencia.setLong(9, intRecarga.getSugerencia());
                 sentencia.setLong(10, intRecarga.getRetiro());
+                sentencia.executeUpdate();
+                desconectar();
+                return true;
+            } catch (SQLException e) {
+                System.out.println("Error: "+e);
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean insertar(MTigo intRecarga) {
+        if(!(intRecarga==null)){
+            try {
+                conectar();
+                String tx = "insert into tigo (fecha,pagado,recargado,debe,ventas,saldo,ganancias,caja,sugerencia,retiro,gananciasSim) values(?,?,?,?,?,?,?,?,?,?,?)";
+                PreparedStatement sentencia = conexion.prepareStatement(tx);
+                sentencia.setDate(1, intRecarga.getFecha());
+                sentencia.setLong(2, intRecarga.getPagado());
+                sentencia.setLong(3, intRecarga.getRecargado());
+                sentencia.setLong(4, intRecarga.getDebe());
+                sentencia.setLong(5, intRecarga.getVentas());
+                sentencia.setLong(6, intRecarga.getSaldo());
+                sentencia.setLong(7, intRecarga.getGanancias());
+                sentencia.setLong(8, intRecarga.getCaja());
+                sentencia.setLong(9, intRecarga.getSugerencia());
+                sentencia.setLong(10, intRecarga.getRetiro());
+                sentencia.setLong(11, intRecarga.getGananciasSim());
+                sentencia.executeUpdate();
+                desconectar();
+                return true;
+            } catch (SQLException e) {
+                System.out.println("Error: "+e);
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean insertar(MSoluciones intRecarga) {
+        if(!(intRecarga==null)){
+            try {
+                conectar();
+                String tx = "insert into soluciones (fecha,pagado,recargado,debe,ventas,saldo,ganancias,caja,sugerencia,retiro,factura,gananciaFac) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+                PreparedStatement sentencia = conexion.prepareStatement(tx);
+                sentencia.setDate(1, intRecarga.getFecha());
+                sentencia.setLong(2, intRecarga.getPagado());
+                sentencia.setLong(3, intRecarga.getRecargado());
+                sentencia.setLong(4, intRecarga.getDebe());
+                sentencia.setLong(5, intRecarga.getVentas());
+                sentencia.setLong(6, intRecarga.getSaldo());
+                sentencia.setLong(7, intRecarga.getGanancias());
+                sentencia.setLong(8, intRecarga.getCaja());
+                sentencia.setLong(9, intRecarga.getSugerencia());
+                sentencia.setLong(10, intRecarga.getRetiro());
+                sentencia.setLong(11, intRecarga.getFactura());
+                sentencia.setLong(12, intRecarga.getGananciaFac());
                 sentencia.executeUpdate();
                 desconectar();
                 return true;
@@ -101,11 +166,11 @@ public class modelDAO extends DataConnection implements InterDAO{
         }
     }
     @Override
-    public boolean actualizar(MRecargas actRecarga, String plataforma) {
-        if(!(actRecarga==null || plataforma.isEmpty())){
+    public boolean actualizar(MTuRed actRecarga) {
+        if(!(actRecarga==null)){
             try {
                 conectar();
-                String tx = "update "+ plataforma +" set "
+                String tx = "update tuRed set "
                         + "pagado=?,recargado=?,debe=?,ventas=?,saldo=?,ganancias=?,caja=?,sugerencia=?,retiro=? "
                         + "where fecha=?";
                 PreparedStatement sentencia = conexion.prepareStatement(tx);
@@ -131,6 +196,74 @@ public class modelDAO extends DataConnection implements InterDAO{
             return false;
         }
     }
+
+    @Override
+    public boolean actualizar(MTigo actRecarga) {
+        if(!(actRecarga==null)){
+            try {
+                conectar();
+                String tx = "update tigo set "
+                        + "pagado=?,recargado=?,debe=?,ventas=?,saldo=?,ganancias=?,caja=?,sugerencia=?,retiro=?,gananciasSim=? "
+                        + "where fecha=?";
+                PreparedStatement sentencia = conexion.prepareStatement(tx);
+                sentencia.setLong(1, actRecarga.getPagado());
+                sentencia.setLong(2, actRecarga.getRecargado());
+                sentencia.setLong(3, actRecarga.getDebe());
+                sentencia.setLong(4, actRecarga.getVentas());
+                sentencia.setLong(5, actRecarga.getSaldo());
+                sentencia.setLong(6, actRecarga.getGanancias());
+                sentencia.setLong(7, actRecarga.getCaja());
+                sentencia.setLong(8, actRecarga.getSugerencia());
+                sentencia.setLong(9, actRecarga.getRetiro());
+                sentencia.setLong(10, actRecarga.getGananciasSim());
+                sentencia.setDate(11, actRecarga.getFecha());
+                sentencia.executeUpdate();
+                desconectar();
+                return true;
+            } catch (SQLException e) {
+                System.out.println("Error: "+e);
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean actualizar(MSoluciones actRecarga) {
+        if(!(actRecarga==null)){
+            try {
+                conectar();
+                String tx = "update soluciones set "
+                        + "pagado=?,recargado=?,debe=?,ventas=?,saldo=?,ganancias=?,caja=?,sugerencia=?,retiro=?,factura=?,gananciaFac=? "
+                        + "where fecha=?";
+                PreparedStatement sentencia = conexion.prepareStatement(tx);
+                sentencia.setLong(1, actRecarga.getPagado());
+                sentencia.setLong(2, actRecarga.getRecargado());
+                sentencia.setLong(3, actRecarga.getDebe());
+                sentencia.setLong(4, actRecarga.getVentas());
+                sentencia.setLong(5, actRecarga.getSaldo());
+                sentencia.setLong(6, actRecarga.getGanancias());
+                sentencia.setLong(7, actRecarga.getCaja());
+                sentencia.setLong(8, actRecarga.getSugerencia());
+                sentencia.setLong(9, actRecarga.getRetiro());
+                sentencia.setLong(10, actRecarga.getFactura());
+                sentencia.setLong(11, actRecarga.getGananciaFac());
+                sentencia.setDate(12, actRecarga.getFecha());
+                sentencia.executeUpdate();
+                desconectar();
+                return true;
+            } catch (SQLException e) {
+                System.out.println("Error: "+e);
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+    
     @Override
     public boolean actualizar(MNequi actNequi) {
         if(actNequi!=null){
@@ -205,12 +338,12 @@ public class modelDAO extends DataConnection implements InterDAO{
         }
     }
     @Override
-    public MRecargas consultar(Date fecha, String plataforma) {
-        if(!(fecha==null || plataforma.isEmpty())){
+    public MTuRed consultarR(Date fecha) {
+        if(!(fecha==null)){
             try {
-                MRecargas recarga = new MRecargas();
+                MTuRed recarga = new MTuRed();
                 conectar();
-                String tx = "select * from "+ plataforma +" where fecha=?";
+                String tx = "select * from tuRed where fecha=?";
                 PreparedStatement sentencia = conexion.prepareStatement(tx);
                 sentencia.setDate(1, fecha);
                 ResultSet datos = sentencia.executeQuery();
@@ -238,6 +371,80 @@ public class modelDAO extends DataConnection implements InterDAO{
             return null;
         }
     }
+
+    @Override
+    public MTigo consultarTi(Date fecha) {
+        if(!(fecha==null)){
+            try {
+                MTigo recarga = new MTigo();
+                conectar();
+                String tx = "select * from tigo where fecha=?";
+                PreparedStatement sentencia = conexion.prepareStatement(tx);
+                sentencia.setDate(1, fecha);
+                ResultSet datos = sentencia.executeQuery();
+                if(datos.next()){
+                    recarga.setFecha(datos.getDate("fecha"));
+                    recarga.setPagado(datos.getLong("pagado"));
+                    recarga.setRecargado(datos.getLong("recargado"));
+                    recarga.setDebe(datos.getLong("debe"));
+                    recarga.setVentas(datos.getLong("ventas"));
+                    recarga.setSaldo(datos.getLong("saldo"));
+                    recarga.setGanancias(datos.getLong("ganancias"));
+                    recarga.setCaja(datos.getLong("caja"));
+                    recarga.setSugerencia(datos.getLong("sugerencia"));
+                    recarga.setRetiro(datos.getLong("retiro"));
+                    recarga.setGananciasSim(datos.getLong("gananciasSim"));
+                }
+                desconectar();
+                return recarga;
+
+            } catch (SQLException e) {
+                System.out.println("Error: "+e);
+                return null;
+            }
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Override
+    public MSoluciones consultarS(Date fecha) {
+        if(!(fecha==null)){
+            try {
+                MSoluciones recarga = new MSoluciones();
+                conectar();
+                String tx = "select * from soluciones where fecha=?";
+                PreparedStatement sentencia = conexion.prepareStatement(tx);
+                sentencia.setDate(1, fecha);
+                ResultSet datos = sentencia.executeQuery();
+                if(datos.next()){
+                    recarga.setFecha(datos.getDate("fecha"));
+                    recarga.setPagado(datos.getLong("pagado"));
+                    recarga.setRecargado(datos.getLong("recargado"));
+                    recarga.setDebe(datos.getLong("debe"));
+                    recarga.setVentas(datos.getLong("ventas"));
+                    recarga.setSaldo(datos.getLong("saldo"));
+                    recarga.setGanancias(datos.getLong("ganancias"));
+                    recarga.setCaja(datos.getLong("caja"));
+                    recarga.setSugerencia(datos.getLong("sugerencia"));
+                    recarga.setRetiro(datos.getLong("retiro"));
+                    recarga.setFactura(datos.getLong("factura"));
+                    recarga.setGananciaFac(datos.getLong("gananciaFac"));
+                }
+                desconectar();
+                return recarga;
+
+            } catch (SQLException e) {
+                System.out.println("Error: "+e);
+                return null;
+            }
+        }
+        else{
+            return null;
+        }
+    }
+    
     @Override
     public MNequi consultarN(Date fecha) {
         if(fecha!=null){
@@ -298,18 +505,18 @@ public class modelDAO extends DataConnection implements InterDAO{
         }
     }
     @Override
-    public List<MRecargas> consultarRango(Date fechaInicial, Date fechaFinal, String plataforma) {
-        if(!(fechaInicial==null || fechaFinal==null || plataforma.isEmpty())){
+    public List<MTuRed> consultarRangoR(Date fechaInicial, Date fechaFinal) {
+        if(!(fechaInicial==null || fechaFinal==null)){
             try {
-                List<MRecargas> recargas = new ArrayList<>();
+                List<MTuRed> recargas = new ArrayList<>();
                 conectar();
-                String tx = "select * from "+ plataforma +" where fecha between ? and ?";
+                String tx = "select * from tuRed where fecha between ? and ?";
                 PreparedStatement sentencia = conexion.prepareStatement(tx);
                 sentencia.setDate(1, fechaInicial);
                 sentencia.setDate(2, fechaFinal);
                 ResultSet datos = sentencia.executeQuery();
                 while(datos.next()){
-                    MRecargas recarga = new MRecargas();
+                    MTuRed recarga = new MTuRed();
                     recarga.setFecha(datos.getDate("fecha"));
                     recarga.setPagado(datos.getLong("pagado"));
                     recarga.setRecargado(datos.getLong("recargado"));
@@ -320,6 +527,83 @@ public class modelDAO extends DataConnection implements InterDAO{
                     recarga.setCaja(datos.getLong("caja"));
                     recarga.setSugerencia(datos.getLong("sugerencia"));
                     recarga.setRetiro(datos.getLong("retiro"));
+                    recargas.add(recarga);
+                }
+                desconectar();
+                return recargas;
+            } catch (SQLException e) {
+                System.out.println("Error: "+e);
+                return null;
+            }
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Override
+    public List<MTigo> consultarRangoTi(Date fechaInicial, Date fechaFinal) {
+        if(!(fechaInicial==null || fechaFinal==null)){
+            try {
+                List<MTigo> recargas = new ArrayList<>();
+                conectar();
+                String tx = "select * from tigo where fecha between ? and ?";
+                PreparedStatement sentencia = conexion.prepareStatement(tx);
+                sentencia.setDate(1, fechaInicial);
+                sentencia.setDate(2, fechaFinal);
+                ResultSet datos = sentencia.executeQuery();
+                while(datos.next()){
+                    MTigo recarga = new MTigo();
+                    recarga.setFecha(datos.getDate("fecha"));
+                    recarga.setPagado(datos.getLong("pagado"));
+                    recarga.setRecargado(datos.getLong("recargado"));
+                    recarga.setDebe(datos.getLong("debe"));
+                    recarga.setVentas(datos.getLong("ventas"));
+                    recarga.setSaldo(datos.getLong("saldo"));
+                    recarga.setGanancias(datos.getLong("ganancias"));
+                    recarga.setCaja(datos.getLong("caja"));
+                    recarga.setSugerencia(datos.getLong("sugerencia"));
+                    recarga.setRetiro(datos.getLong("retiro"));
+                    recarga.setGananciasSim(datos.getLong("gananciasSim"));
+                    recargas.add(recarga);
+                }
+                desconectar();
+                return recargas;
+            } catch (SQLException e) {
+                System.out.println("Error: "+e);
+                return null;
+            }
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Override
+    public List<MSoluciones> consultarRangoS(Date fechaInicial, Date fechaFinal) {
+        if(!(fechaInicial==null || fechaFinal==null)){
+            try {
+                List<MSoluciones> recargas = new ArrayList<>();
+                conectar();
+                String tx = "select * from soluciones where fecha between ? and ?";
+                PreparedStatement sentencia = conexion.prepareStatement(tx);
+                sentencia.setDate(1, fechaInicial);
+                sentencia.setDate(2, fechaFinal);
+                ResultSet datos = sentencia.executeQuery();
+                while(datos.next()){
+                    MSoluciones recarga = new MSoluciones();
+                    recarga.setFecha(datos.getDate("fecha"));
+                    recarga.setPagado(datos.getLong("pagado"));
+                    recarga.setRecargado(datos.getLong("recargado"));
+                    recarga.setDebe(datos.getLong("debe"));
+                    recarga.setVentas(datos.getLong("ventas"));
+                    recarga.setSaldo(datos.getLong("saldo"));
+                    recarga.setGanancias(datos.getLong("ganancias"));
+                    recarga.setCaja(datos.getLong("caja"));
+                    recarga.setSugerencia(datos.getLong("sugerencia"));
+                    recarga.setRetiro(datos.getLong("retiro"));
+                    recarga.setFactura(datos.getLong("factura"));
+                    recarga.setGananciaFac(datos.getLong("gananciaFac"));
                     recargas.add(recarga);
                 }
                 desconectar();

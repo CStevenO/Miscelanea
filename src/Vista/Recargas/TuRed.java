@@ -1,7 +1,7 @@
 package Vista.Recargas;
 
-import Controlador.CRecargas;
-import Modelo.MRecargas;
+import Controlador.CTuRed;
+import Modelo.MTuRed;
 import java.text.ParseException;
 import java.sql.Date;
 import java.util.logging.Level;
@@ -22,8 +22,8 @@ public class TuRed extends javax.swing.JFrame {
         btnIngresar.setEnabled(false);
         try {
             Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
-            MRecargas recarga = new CRecargas().Consultar(sqlDate, "tuRed");
-            recarga.calcular("tuRed");
+            MTuRed recarga = new CTuRed().Consultar(sqlDate);
+            recarga.calcular();
             txtPagado.setText(recarga.getPagado()+"");
             txtRecargado.setText(recarga.getRecargado()+"");
             txtDebe.setText(recarga.getDebe()+"");
@@ -312,7 +312,7 @@ public class TuRed extends javax.swing.JFrame {
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         try {
-            MRecargas recarga = new MRecargas();
+            MTuRed recarga = new MTuRed();
             Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
             recarga.setFecha(sqlDate);
             recarga.setCaja(Long.parseLong(txtCaja.getText()));
@@ -324,8 +324,8 @@ public class TuRed extends javax.swing.JFrame {
             recarga.setSaldo(Long.parseLong(txtSaldo.getText()));
             recarga.setSugerencia(Long.parseLong(txtSugerencia.getText()));
             recarga.setVentas(Long.parseLong(txtVentas.getText()));
-            recarga.calcular("tuRed");
-            boolean reca = new CRecargas().Insertar(recarga, "tuRed");
+            recarga.calcular();
+            boolean reca = new CTuRed().Insertar(recarga);
             String mensaje = reca?"Recarga Registrada":"Recarga NO Registrada";
             limpiar();
             JOptionPane.showMessageDialog(this,mensaje);
@@ -338,7 +338,7 @@ public class TuRed extends javax.swing.JFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try {
             Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
-            boolean reca = new CRecargas().Eliminar(sqlDate, "tuRed");
+            boolean reca = new CTuRed().Eliminar(sqlDate, "tuRed");
             String mensaje = reca?"Recarga Eliminada":"Recarga NO Eliminada";
             JOptionPane.showMessageDialog(this,mensaje);
         } catch (ParseException ex) {
@@ -353,8 +353,8 @@ public class TuRed extends javax.swing.JFrame {
                 btnEliminar.setEnabled(false);
                 btnConsultar.setEnabled(false);
                 Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
-                MRecargas recarga = new CRecargas().Consultar(sqlDate, "tuRed");
-                recarga.calcular("tuRed");
+                MTuRed recarga = new CTuRed().Consultar(sqlDate);
+                recarga.calcular();
                 txtPagado.setText(recarga.getPagado()+"");
                 txtRecargado.setText(recarga.getRecargado()+"");
                 txtDebe.setText(recarga.getDebe()+"");
@@ -373,7 +373,7 @@ public class TuRed extends javax.swing.JFrame {
                 btnActualizar.setText("Actualizar");
                 btnEliminar.setEnabled(true);
                 btnConsultar.setEnabled(true);
-                MRecargas recarga = new MRecargas();
+                MTuRed recarga = new MTuRed();
                 Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
                 recarga.setFecha(sqlDate);
                 recarga.setCaja(Long.parseLong(txtCaja.getText()));
@@ -385,8 +385,8 @@ public class TuRed extends javax.swing.JFrame {
                 recarga.setSaldo(Long.parseLong(txtSaldo.getText()));
                 recarga.setSugerencia(Long.parseLong(txtSugerencia.getText()));
                 recarga.setVentas(Long.parseLong(txtVentas.getText()));
-                recarga.calcular("tuRed");
-                boolean reca = new CRecargas().Actualizar(recarga, "tuRed");
+                recarga.calcular();
+                boolean reca = new CTuRed().Actualizar(recarga);
                 String mensaje = reca?"Recarga Actualizada":"Recarga NO Actualizada";
                 limpiar();
                 JOptionPane.showMessageDialog(this,mensaje);

@@ -1,7 +1,7 @@
 package Vista.Recargas;
 
-import Controlador.CRecargas;
-import Modelo.MRecargas;
+import Controlador.CTigo;
+import Modelo.MTigo;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.logging.Level;
@@ -22,8 +22,8 @@ public class Tigo extends javax.swing.JFrame {
         btnIngresar.setEnabled(false);
         try {
             Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
-            MRecargas recarga = new CRecargas().Consultar(sqlDate, "tigo");
-            recarga.calcular("tigo");
+            MTigo recarga = new CTigo().Consultar(sqlDate);
+            recarga.calcular();
             txtPagado.setText(recarga.getPagado()+"");
             txtRecargado.setText(recarga.getRecargado()+"");
             txtDebe.setText(recarga.getDebe()+"");
@@ -33,6 +33,7 @@ public class Tigo extends javax.swing.JFrame {
             txtCaja.setText(recarga.getCaja()+"");
             txtSugerencia.setText(recarga.getSugerencia()+"");
             txtRetiro.setText(recarga.getRetiro()+"");
+            txtSim.setText(recarga.getGananciasSim()+"");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,"Error: "+e);
         }
@@ -47,6 +48,7 @@ public class Tigo extends javax.swing.JFrame {
         txtCaja.setText(0+"");
         txtSugerencia.setText(0+"");
         txtRetiro.setText(0+"");
+        txtSim.setText(0+"");
     }
 
     /**
@@ -58,6 +60,7 @@ public class Tigo extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel11 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -83,6 +86,10 @@ public class Tigo extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
         txtFecha = new datechooser.beans.DateChooserCombo();
+        txtSim = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+
+        jLabel11.setText("Ganancias Sim");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tigo");
@@ -203,29 +210,45 @@ public class Tigo extends javax.swing.JFrame {
 
         txtFecha.setFormat(2);
 
+        jLabel12.setText("Ganancias Sim");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnIngresar)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel10)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabel5)
-                        .addComponent(jLabel6)
-                        .addComponent(jLabel7)
-                        .addComponent(jLabel8)
-                        .addComponent(jLabel9)))
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnIngresar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnConsultar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnActualizar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEliminar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(147, 147, 147)
+                                .addComponent(btnVolver)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel12))
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtSim, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtPagado)
                             .addComponent(txtRecargado)
                             .addComponent(txtDebe)
@@ -235,20 +258,8 @@ public class Tigo extends javax.swing.JFrame {
                             .addComponent(txtCaja)
                             .addComponent(txtSugerencia)
                             .addComponent(txtRetiro)
-                            .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btnConsultar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnActualizar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminar)
-                        .addContainerGap(33, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(169, 169, 169)
-                .addComponent(btnVolver)
-                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,7 +304,11 @@ public class Tigo extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(txtRetiro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIngresar)
                     .addComponent(btnConsultar)
@@ -301,7 +316,7 @@ public class Tigo extends javax.swing.JFrame {
                     .addComponent(btnEliminar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnVolver)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -313,7 +328,7 @@ public class Tigo extends javax.swing.JFrame {
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         try {
-            MRecargas recarga = new MRecargas();
+            MTigo recarga = new MTigo();
             Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
             recarga.setFecha(sqlDate);
             recarga.setCaja(Long.parseLong(txtCaja.getText()));
@@ -325,25 +340,26 @@ public class Tigo extends javax.swing.JFrame {
             recarga.setSaldo(Long.parseLong(txtSaldo.getText()));
             recarga.setSugerencia(Long.parseLong(txtSugerencia.getText()));
             recarga.setVentas(Long.parseLong(txtVentas.getText()));
-            recarga.calcular("tigo");
-            boolean reca = new CRecargas().Insertar(recarga, "tigo");
+            recarga.setGananciasSim(Long.parseLong(txtSim.getText()));
+            recarga.calcular();
+            boolean reca = new CTigo().Insertar(recarga);
             String mensaje = reca?"Recarga Registrada":"Recarga NO Registrada";
             limpiar();
             JOptionPane.showMessageDialog(this,mensaje);
             btnIngresar.setEnabled(false);
         } catch (ParseException ex) {
-            Logger.getLogger(TuRed.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Tigo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try {
             Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
-            boolean reca = new CRecargas().Eliminar(sqlDate, "tigo");
+            boolean reca = new CTigo().Eliminar(sqlDate, "tigo");
             String mensaje = reca?"Recarga Eliminada":"Recarga NO Eliminada";
             JOptionPane.showMessageDialog(this,mensaje);
         } catch (ParseException ex) {
-            Logger.getLogger(TuRed.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Tigo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -354,8 +370,8 @@ public class Tigo extends javax.swing.JFrame {
                 btnEliminar.setEnabled(false);
                 btnConsultar.setEnabled(false);
                 Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
-                MRecargas recarga = new CRecargas().Consultar(sqlDate, "tigo");
-                recarga.calcular("tigo");
+                MTigo recarga = new CTigo().Consultar(sqlDate);
+                recarga.calcular();
                 txtPagado.setText(recarga.getPagado()+"");
                 txtRecargado.setText(recarga.getRecargado()+"");
                 txtDebe.setText(recarga.getDebe()+"");
@@ -365,8 +381,9 @@ public class Tigo extends javax.swing.JFrame {
                 txtCaja.setText(recarga.getCaja()+"");
                 txtSugerencia.setText(recarga.getSugerencia()+"");
                 txtRetiro.setText(recarga.getRetiro()+"");
+                txtSim.setText(recarga.getGananciasSim()+"");
             } catch (ParseException ex) {
-                Logger.getLogger(TuRed.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Tigo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else{
@@ -374,7 +391,7 @@ public class Tigo extends javax.swing.JFrame {
                 btnActualizar.setText("Actualizar");
                 btnEliminar.setEnabled(true);
                 btnConsultar.setEnabled(true);
-                MRecargas recarga = new MRecargas();
+                MTigo recarga = new MTigo();
                 Date sqlDate = new Date(txtFecha.getDateFormat().parse(txtFecha.getText()).getTime());
                 recarga.setFecha(sqlDate);
                 recarga.setCaja(Long.parseLong(txtCaja.getText()));
@@ -386,13 +403,14 @@ public class Tigo extends javax.swing.JFrame {
                 recarga.setSaldo(Long.parseLong(txtSaldo.getText()));
                 recarga.setSugerencia(Long.parseLong(txtSugerencia.getText()));
                 recarga.setVentas(Long.parseLong(txtVentas.getText()));
-                recarga.calcular("tigo");
-                boolean reca = new CRecargas().Actualizar(recarga, "tigo");
+                recarga.setGananciasSim(Long.parseLong(txtSim.getText()));
+                recarga.calcular();
+                boolean reca = new CTigo().Actualizar(recarga);
                 String mensaje = reca?"Recarga Actualizada":"Recarga NO Actualizada";
                 limpiar();
                 JOptionPane.showMessageDialog(this,mensaje);
             } catch (ParseException ex) {
-                Logger.getLogger(TuRed.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Tigo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
@@ -521,6 +539,8 @@ public class Tigo extends javax.swing.JFrame {
     private javax.swing.JButton btnVolver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -537,6 +557,7 @@ public class Tigo extends javax.swing.JFrame {
     private javax.swing.JTextField txtRecargado;
     private javax.swing.JTextField txtRetiro;
     private javax.swing.JTextField txtSaldo;
+    private javax.swing.JTextField txtSim;
     private javax.swing.JTextField txtSugerencia;
     private javax.swing.JTextField txtVentas;
     // End of variables declaration//GEN-END:variables

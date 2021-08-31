@@ -1,34 +1,27 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Controlador;
 
 import DAO.InterDAO;
 import DAO.modelDAO;
-import Modelo.MRecargas;
 import java.sql.Date;
 import java.util.List;
 
 /**
  *
  * @author Steve
+ * @param <T>
  */
-public class CRecargas {
-    private InterDAO recargas;
-    public CRecargas(){
+public abstract class CRecarga<T> {
+    InterDAO recargas;
+    public CRecarga(){
         recargas = new modelDAO();
-    }
-    public boolean Insertar(MRecargas recarga, String plataforma){
-        return recargas.insertar(recarga, plataforma);
-    }
-    public boolean Actualizar(MRecargas actRecarga,String plataforma){
-        return recargas.actualizar(actRecarga, plataforma);
     }
     public boolean Eliminar(Date fecha, String servicio){
         return recargas.eliminar(fecha, servicio);
-    }
-    public MRecargas Consultar(Date fecha,String plataforma){
-        return recargas.consultar(fecha, plataforma);
-    }
-    public List<MRecargas> ConsultarRango(Date fechaInicial,Date fechaFinal,String plataforma){
-        return recargas.consultarRango(fechaInicial, fechaFinal, plataforma);
     }
     public List<String> Columnas(String plataforma){
         return recargas.columnas(plataforma);
@@ -48,4 +41,8 @@ public class CRecargas {
     public boolean setPorcentaje(Date fecha,String plataforma,float porcentaje){
         return recargas.setPorcentaje(fecha, plataforma, porcentaje);
     }
+    public abstract boolean Insertar(T recarga);
+    public abstract boolean Actualizar(T actRecarga);
+    public abstract T Consultar(Date fecha);
+    public abstract List<T> ConsultarRango(Date fechaInicial,Date fechaFinal);
 }

@@ -5,9 +5,7 @@
  */
 package Vista.Recargas;
 
-import Vista.Recargas.TuRed;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+
 /**
  *
  * @author Steve

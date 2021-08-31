@@ -1,9 +1,6 @@
 package Modelo;
 
-import Controlador.CLlave;
-import Controlador.CRecargas;
 import java.sql.Date;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -104,65 +101,5 @@ public class MRecargas {
     }
     public void setRetiro(long retiro) {
         this.retiro = retiro;
-    }
-    public void calcular(String plataforma){
-        if(!plataforma.isEmpty()){
-            if(fecha==null){
-                fecha = new Date(Calendar.getInstance().getTime().getTime());
-            }
-            Date yesterday = new Date(fecha.getTime() - (1000 * 60 * 60 * 24));
-            MRecargas anterior = new CRecargas().Consultar(yesterday,plataforma);
-            switch(plataforma){
-                case "soluciones":
-                    debe = (long) (pagado  - recargado + anterior.getDebe());
-                    saldo = recargado - ventas + anterior.getSaldo()-new CLlave().Consultar(fecha).getRecargas();
-                    ganancias = (long) ((new CRecargas().getPorcentaje(plataforma)*ventas)+anterior.getGanancias()+(new CLlave().getPorcentaje()*new CLlave().Consultar(fecha).getRecargas()));
-                    caja = ventas-pagado+anterior.getCaja()-retiro+new CLlave().Consultar(fecha).getRecargas();
-                    sugerencia = (long) (((new CRecargas().getTope(plataforma)-saldo-debe)/(1+new CRecargas().getPorcentaje(plataforma)))+((new CLlave().getTope()-new CLlave().Consultar(fecha).getSaldo())/(1+new CLlave().getPorcentaje())));
-                break;
-                default:
-                    debe = (long) (pagado + (new CRecargas().getPorcentaje(plataforma)*pagado) - recargado + anterior.getDebe());
-                    saldo = recargado - ventas + anterior.getSaldo();
-                    ganancias = (long) (new CRecargas().getPorcentaje(plataforma)*recargado);
-                    caja = ventas-pagado+anterior.getCaja()-retiro;
-                    sugerencia = (long) ((new CRecargas().getTope(plataforma)-saldo-debe)/(1+new CRecargas().getPorcentaje(plataforma)));
-            }
-            System.out.println(1+new CRecargas().getPorcentaje(plataforma));
-            if(retiro>caja-sugerencia && retiro!=0){
-                new CRecargas().setTope(fecha, plataforma, new CRecargas().getTope(plataforma)+caja-sugerencia-retiro);
-            }
-            else if(retiro<0){
-                new CRecargas().setTope(fecha, plataforma, new CRecargas().getTope(plataforma)-retiro);
-            }
-        }
-    }
-    public void calcular(String plataforma,MRecargas anterior){
-        if(!plataforma.isEmpty()){
-            if(fecha==null){
-                fecha = new Date(Calendar.getInstance().getTime().getTime());
-            }
-            switch(plataforma){
-                case "soluciones":
-                    debe = (long) (pagado  - recargado + anterior.getDebe());
-                    saldo = recargado - ventas + anterior.getSaldo()-new CLlave().Consultar(fecha).getRecargas();
-                    ganancias = (long) ((new CRecargas().getPorcentaje(plataforma)*ventas)+anterior.getGanancias()+(new CLlave().getPorcentaje()*new CLlave().Consultar(fecha).getRecargas()));
-                    caja = ventas-pagado+anterior.getCaja()-retiro+new CLlave().Consultar(fecha).getRecargas();
-                    sugerencia = (long) (((new CRecargas().getTope(plataforma)-saldo-debe)/(1+new CRecargas().getPorcentaje(plataforma)))+((new CLlave().getTope()-new CLlave().Consultar(fecha).getSaldo())/(1+new CLlave().getPorcentaje())));
-                break;
-                default:
-                    debe = (long) (pagado + (new CRecargas().getPorcentaje(plataforma)*pagado) - recargado + anterior.getDebe());
-                    saldo = recargado - ventas + anterior.getSaldo();
-                    ganancias = (long) (new CRecargas().getPorcentaje(plataforma)*recargado);
-                    caja = ventas-pagado+anterior.getCaja()-retiro;
-                    sugerencia = (long) ((new CRecargas().getTope(plataforma)-saldo-debe)/(1+new CRecargas().getPorcentaje(plataforma)));
-            }
-            System.out.println(1+new CRecargas().getPorcentaje(plataforma));
-            if(retiro>caja-sugerencia && retiro!=0){
-                new CRecargas().setTope(fecha, plataforma, new CRecargas().getTope(plataforma)+caja-sugerencia-retiro);
-            }
-            else if(retiro<0){
-                new CRecargas().setTope(fecha, plataforma, new CRecargas().getTope(plataforma)-retiro);
-            }
-        }
     }
 }
