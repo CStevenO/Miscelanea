@@ -51,4 +51,12 @@ public class CNequi {
     public long mes(){
         return nequi.consultarMovimiento();
     }
+    public boolean Actualizar(List<MNequi> todos) {
+        for(MNequi red:todos){
+            if(!Actualizar(red)){
+                return false;
+            }
+        }
+        return true;
+    }
 }

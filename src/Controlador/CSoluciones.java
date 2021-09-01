@@ -30,4 +30,14 @@ public class CSoluciones extends CRecarga<MSoluciones>{
     public List<MSoluciones> ConsultarRango(Date fechaInicial, Date fechaFinal) {
         return recargas.consultarRangoS(fechaInicial, fechaFinal);
     }
+
+    @Override
+    public boolean Actualizar(List<MSoluciones> todos) {
+        for(MSoluciones red:todos){
+            if(!Actualizar(red)){
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -179,34 +179,48 @@ public class Impresion extends javax.swing.JFrame {
     TImpresiones model = new TImpresiones();
     long total = 0;
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        long pr;
+        int can;
         try {
-            MImpresion impresion = new MImpresion();
-            if(boxTipo.getSelectedItem().equals("Color")){
-                impresion.setTipo("C");
-            }
-            else if(boxTipo.getSelectedItem().equals("BN")){
-                impresion.setTipo("N");
-            }
-            else{
-                impresion.setTipo("SN");
-            }
-            impresion.setPrecio(Long.parseLong(txtPrecio.getText()));
-            impresion.setCantidad(Integer.parseInt(txtCantidad.getText()));
-            model.model.addRow(impresion);
-            tableImpresion.setModel(model.getModelo());
-            btnCargar.setEnabled(true);
-            total = total+impresion.getPrecio()*impresion.getCantidad();
-            txtTotal.setText(total+"");
-            txtCantidad.setText(null);
-            txtPrecio.setText(null);
+            pr = Integer.parseInt(txtPrecio.getText());
+            can = Integer.parseInt(txtCantidad.getText());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,e);
+            JOptionPane.showMessageDialog(this,"debe ingresar numeros en valor y cantidad");
+            pr = 3;
         }
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        tableImpresion.setDefaultRenderer(String.class, centerRenderer);
-        tableImpresion.setDefaultRenderer(int.class, centerRenderer);
-        tableImpresion.setDefaultRenderer(Long.class, centerRenderer);
+        if(pr%50==0){    
+            try {
+                MImpresion impresion = new MImpresion();
+                if(boxTipo.getSelectedItem().equals("Color")){
+                    impresion.setTipo("C");
+                }
+                else if(boxTipo.getSelectedItem().equals("BN")){
+                    impresion.setTipo("N");
+                }
+                else{
+                    impresion.setTipo("SN");
+                }
+                impresion.setPrecio(Long.parseLong(txtPrecio.getText()));
+                impresion.setCantidad(Integer.parseInt(txtCantidad.getText()));
+                model.model.addRow(impresion);
+                tableImpresion.setModel(model.getModelo());
+                btnCargar.setEnabled(true);
+                total = total+impresion.getPrecio()*impresion.getCantidad();
+                txtTotal.setText(total+"");
+                txtCantidad.setText(null);
+                txtPrecio.setText(null);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,e);
+            }
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+            tableImpresion.setDefaultRenderer(String.class, centerRenderer);
+            tableImpresion.setDefaultRenderer(int.class, centerRenderer);
+            tableImpresion.setDefaultRenderer(Long.class, centerRenderer);
+        }
+        else{
+            JOptionPane.showMessageDialog(this,"Error: el valor unitario debe ser factor de 50");
+        }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed

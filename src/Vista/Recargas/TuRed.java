@@ -4,6 +4,8 @@ import Controlador.CTuRed;
 import Modelo.MTuRed;
 import java.text.ParseException;
 import java.sql.Date;
+import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -387,6 +389,20 @@ public class TuRed extends javax.swing.JFrame {
                 recarga.setVentas(Long.parseLong(txtVentas.getText()));
                 recarga.calcular();
                 boolean reca = new CTuRed().Actualizar(recarga);
+                Date actual = new Date(Calendar.getInstance().getTime().getTime());
+                List<MTuRed> todos = new CTuRed().ConsultarRango(recarga.getFecha(), actual);
+                int i=0;
+                while(i<todos.size()){
+                    if(i==0){
+                        todos.get(i).calcular();
+                    }
+                    else{
+                        todos.get(i).calcular(todos.get(i-1));
+                    }
+                    i++;
+                }
+                boolean reca2 = new CTuRed().Actualizar(todos);
+                reca = reca||reca2;
                 String mensaje = reca?"Recarga Actualizada":"Recarga NO Actualizada";
                 limpiar();
                 JOptionPane.showMessageDialog(this,mensaje);

@@ -48,4 +48,12 @@ public class CLlave {
     public boolean setPorcentaje(Date fecha,float porcentaje){
         return llave.setPorcentaje(fecha, "llave", porcentaje);
     }
+    public boolean Actualizar(List<MTuLlave> todos) {
+        for(MTuLlave red:todos){
+            if(!Actualizar(red)){
+                return false;
+            }
+        }
+        return true;
+    }
 }

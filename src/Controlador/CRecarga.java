@@ -45,4 +45,5 @@ public abstract class CRecarga<T> {
     public abstract boolean Actualizar(T actRecarga);
     public abstract T Consultar(Date fecha);
     public abstract List<T> ConsultarRango(Date fechaInicial,Date fechaFinal);
+    public abstract boolean Actualizar(List<T> todos);
 }
