@@ -48,20 +48,22 @@ public class MSoluciones extends MRecargas{
         }
     }
     public void calcular(MSoluciones anterior){
-        String plataforma = "soluciones";
-        if(getFecha()==null){
-            setFecha(new Date(Calendar.getInstance().getTime().getTime()));
-        }
-        setDebe((long) (getPagado()  - getRecargado() + anterior.getDebe()));
-        setSaldo(getRecargado() - getVentas() + anterior.getSaldo()-new CLlave().Consultar(getFecha()).getRecargas()-factura);
-        setGanancias((long) (gananciaFac + (new CSoluciones().getPorcentaje(plataforma)*getVentas())+anterior.getGanancias()+(new CLlave().getPorcentaje()*new CLlave().Consultar(getFecha()).getRecargas())));
-        setCaja(getVentas()-getPagado()+anterior.getCaja()-getRetiro()+new CLlave().Consultar(getFecha()).getRecargas()+factura);
-        setSugerencia((long) (((new CSoluciones().getTope(plataforma)-getSaldo()-getDebe())/(1+new CSoluciones().getPorcentaje(plataforma)))+((new CLlave().getTope()-new CLlave().Consultar(getFecha()).getSaldo())/(1+new CLlave().getPorcentaje()))));
-        if(getRetiro()>getCaja()-getSugerencia() && getRetiro()!=0){
-            new CSoluciones().setTope(getFecha(), plataforma, new CSoluciones().getTope(plataforma)+getCaja()-getSugerencia()-getRetiro());
-        }
-        else if(getRetiro()<0){
-            new CSoluciones().setTope(getFecha(), plataforma, new CSoluciones().getTope(plataforma)-getRetiro());
+        if(anterior!=null){
+            String plataforma = "soluciones";
+            if(getFecha()==null){
+                setFecha(new Date(Calendar.getInstance().getTime().getTime()));
+            }
+            setDebe((long) (getPagado()  - getRecargado() + anterior.getDebe()));
+            setSaldo(getRecargado() - getVentas() + anterior.getSaldo()-new CLlave().Consultar(getFecha()).getRecargas()-factura);
+            setGanancias((long) (gananciaFac + (new CSoluciones().getPorcentaje(plataforma)*getVentas())+anterior.getGanancias()+(new CLlave().getPorcentaje()*new CLlave().Consultar(getFecha()).getRecargas())));
+            setCaja(getVentas()-getPagado()+anterior.getCaja()-getRetiro()+new CLlave().Consultar(getFecha()).getRecargas()+factura);
+            setSugerencia((long) (((new CSoluciones().getTope(plataforma)-getSaldo()-getDebe())/(1+new CSoluciones().getPorcentaje(plataforma)))+((new CLlave().getTope()-new CLlave().Consultar(getFecha()).getSaldo())/(1+new CLlave().getPorcentaje()))));
+            if(getRetiro()>getCaja()-getSugerencia() && getRetiro()!=0){
+                new CSoluciones().setTope(getFecha(), plataforma, new CSoluciones().getTope(plataforma)+getCaja()-getSugerencia()-getRetiro());
+            }
+            else if(getRetiro()<0){
+                new CSoluciones().setTope(getFecha(), plataforma, new CSoluciones().getTope(plataforma)-getRetiro());
+            }
         }
     }
 

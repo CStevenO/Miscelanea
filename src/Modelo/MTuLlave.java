@@ -70,11 +70,13 @@ public class MTuLlave {
         caja = anterior.getCaja()+ventas-recargas;
     }
     public void calcular(MTuLlave anterior){
-        if(fecha == null){
-            fecha = new Date(Calendar.getInstance().getTime().getTime());
+        if(anterior!=null){
+            if(fecha == null){
+                fecha = new Date(Calendar.getInstance().getTime().getTime());
+            }
+            saldo = anterior.getSaldo()+recargas-ventas;
+            caja = anterior.getCaja()+ventas-recargas;
         }
-        saldo = anterior.getSaldo()+recargas-ventas;
-        caja = anterior.getCaja()+ventas-recargas;
     }
     public boolean recargar(Date fecha,long recarga){
         if(fecha==null){

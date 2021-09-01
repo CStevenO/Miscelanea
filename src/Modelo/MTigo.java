@@ -44,20 +44,22 @@ public class MTigo extends MRecargas{
         }
     }
     public void calcular(MTigo anterior){
-        String plataforma = "tigo";
-        if(getFecha()==null){
-            setFecha(new Date(Calendar.getInstance().getTime().getTime()));
-        }
-        setDebe((long) (getPagado() + (new CTigo().getPorcentaje(plataforma)*getPagado()) - getRecargado() + anterior.getDebe()));
-        setSaldo(getRecargado() - getVentas() + anterior.getSaldo()+getGananciasSim());
-        setGanancias((long) (new CTigo().getPorcentaje(plataforma)*getRecargado()));
-        setCaja(getVentas()-getPagado()+anterior.getCaja()-getRetiro());
-        setSugerencia((long) ((new CTigo().getTope(plataforma)-getSaldo()-getDebe())/(1+new CTigo().getPorcentaje(plataforma))));
-        if(getRetiro()>getCaja()-getSugerencia() && getRetiro()!=0){
-            new CTigo().setTope(getFecha(), plataforma, new CTigo().getTope(plataforma)+getCaja()-getSugerencia()-getRetiro());
-        }
-        else if(getRetiro()<0){
-            new CTigo().setTope(getFecha(), plataforma, new CTigo().getTope(plataforma)-getRetiro());
+        if(anterior!=null){
+            String plataforma = "tigo";
+            if(getFecha()==null){
+                setFecha(new Date(Calendar.getInstance().getTime().getTime()));
+            }
+            setDebe((long) (getPagado() + (new CTigo().getPorcentaje(plataforma)*getPagado()) - getRecargado() + anterior.getDebe()));
+            setSaldo(getRecargado() - getVentas() + anterior.getSaldo()+getGananciasSim());
+            setGanancias((long) (new CTigo().getPorcentaje(plataforma)*getRecargado()));
+            setCaja(getVentas()-getPagado()+anterior.getCaja()-getRetiro());
+            setSugerencia((long) ((new CTigo().getTope(plataforma)-getSaldo()-getDebe())/(1+new CTigo().getPorcentaje(plataforma))));
+            if(getRetiro()>getCaja()-getSugerencia() && getRetiro()!=0){
+                new CTigo().setTope(getFecha(), plataforma, new CTigo().getTope(plataforma)+getCaja()-getSugerencia()-getRetiro());
+            }
+            else if(getRetiro()<0){
+                new CTigo().setTope(getFecha(), plataforma, new CTigo().getTope(plataforma)-getRetiro());
+            }
         }
     }
 

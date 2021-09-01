@@ -33,11 +33,14 @@ public class CSoluciones extends CRecarga<MSoluciones>{
 
     @Override
     public boolean Actualizar(List<MSoluciones> todos) {
-        for(MSoluciones red:todos){
-            if(!Actualizar(red)){
-                return false;
+        if(todos!=null){
+            for(MSoluciones red:todos){
+                if(!Actualizar(red)){
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 }

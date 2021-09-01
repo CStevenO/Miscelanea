@@ -33,11 +33,14 @@ public class CTigo extends CRecarga<MTigo>{
 
     @Override
     public boolean Actualizar(List<MTigo> todos) {
-        for(MTigo red:todos){
-            if(!Actualizar(red)){
-                return false;
+        if(todos!=null){
+            for(MTigo red:todos){
+                if(!Actualizar(red)){
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 }

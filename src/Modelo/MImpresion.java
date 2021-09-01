@@ -11,7 +11,7 @@ public class MImpresion {
     public MImpresion(){
         cantidad = 0;
         precio = 0;
-        tipo = null;
+        tipo = "";
     }
     public int getCantidad() {
         return cantidad;

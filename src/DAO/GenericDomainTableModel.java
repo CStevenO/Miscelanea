@@ -136,7 +136,8 @@ public abstract class GenericDomainTableModel<T> implements TableModel{
     @Override
     public String getColumnName(int columnIndex) {
         if (columnIndex < 0 || columnIndex >= getColumnCount()) {
-            throw new ArrayIndexOutOfBoundsException(columnIndex);
+            //throw new ArrayIndexOutOfBoundsException(columnIndex);
+            return "";
         } else {
             return columnIdentifiers.get(columnIndex).toString();
         }
@@ -144,16 +145,21 @@ public abstract class GenericDomainTableModel<T> implements TableModel{
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return true;
+        if(!data.isEmpty()){
+            return true;
+        }
+        return false;
     }
     /**
      * Agrega un nuevo objeto de dominio como fila al final del table model.
      * @param domainObject El objeto de dominio.
      */
     public void addRow(T domainObject) {
-        int rowIndex = data.size();
-        data.add(domainObject);
-        notifyTableRowsInserted(rowIndex, rowIndex);
+        if(domainObject!=null){
+            int rowIndex = data.size();
+            data.add(domainObject);
+            notifyTableRowsInserted(rowIndex, rowIndex);
+        }
     }
 
     /**
@@ -161,11 +167,13 @@ public abstract class GenericDomainTableModel<T> implements TableModel{
      * @param domainObjects Los objetos de dominio
      */
     public void addRows(List<T> domainObjects) {
-        if (!domainObjects.isEmpty()) {
-            int firstRow = data.size();
-            data.addAll(domainObjects);
-            int lastRow = data.size() - 1;
-            notifyTableRowsInserted(firstRow, lastRow);
+        if(domainObjects!=null){
+            if (!domainObjects.isEmpty()) {
+                int firstRow = data.size();
+                data.addAll(domainObjects);
+                int lastRow = data.size() - 1;
+                notifyTableRowsInserted(firstRow, lastRow);
+            }
         }
     }
 
@@ -216,8 +224,10 @@ public abstract class GenericDomainTableModel<T> implements TableModel{
      * @param rowIndex El número de fila a eliminar
      */
     public void deleteRow(int rowIndex) {
-        if (data.remove(data.get(rowIndex))) {
-            notifyTableRowsDeleted(rowIndex, rowIndex);
+        if(!data.isEmpty()){
+            if (data.remove(data.get(rowIndex))) {
+                notifyTableRowsDeleted(rowIndex, rowIndex);
+            }
         }
     }
 
@@ -229,13 +239,15 @@ public abstract class GenericDomainTableModel<T> implements TableModel{
      * @throws IllegalArgumentException Si {@code firstRow < 0} ó {@code lastRow < 0} ó {@code firstRow > lastRow}.
      */
     public void deleteRows(int firstRow, int lastRow) {
-        if (firstRow < 0 || lastRow < 0 || firstRow > lastRow) {
-            throw new IllegalArgumentException("Los parámetros firstRow y lastRow deben ser positivos y firstRow >= lastRow.");
-        } else {
-            for (int i = firstRow; i <= lastRow; i++) {
-                data.remove(i);
+        if(!data.isEmpty()){
+            if (firstRow < 0 || lastRow < 0 || firstRow > lastRow) {
+                throw new IllegalArgumentException("Los parámetros firstRow y lastRow deben ser positivos y firstRow >= lastRow.");
+            } else {
+                for (int i = firstRow; i <= lastRow; i++) {
+                    data.remove(i);
+                }
+                notifyTableRowsDeleted(firstRow, lastRow);
             }
-            notifyTableRowsDeleted(firstRow, lastRow);
         }
     }
 
@@ -256,7 +268,10 @@ public abstract class GenericDomainTableModel<T> implements TableModel{
      * @return Un objeto de dominio.
      */
     public T getDomainObject(int rowIndex) {
-        return data.get(rowIndex);
+        if(!data.isEmpty()){
+            return data.get(rowIndex);
+        }
+        return null;
     }
     
     /**
@@ -268,14 +283,20 @@ public abstract class GenericDomainTableModel<T> implements TableModel{
      * @return Una sublista con objetos de dominio.
      */
     public List<T> getDomainObjects(int firstRow, int lastRow) {
-        return Collections.unmodifiableList(data.subList(firstRow, lastRow + 1));
+        if(!data.isEmpty()){
+            return Collections.unmodifiableList(data.subList(firstRow, lastRow + 1));
+        }
+        return null;
     }
 
     /**
      * @return Todos los objetos de dominio de este table model.
      */
     public List<T> getDomainObjects() {
-        return Collections.unmodifiableList(data);
+        if(!data.isEmpty()){
+            return Collections.unmodifiableList(data);
+        }
+        return null;
     }
 
     /**
@@ -284,8 +305,10 @@ public abstract class GenericDomainTableModel<T> implements TableModel{
      * @param columnIdentifiers Los nuevos identificadores de columnas.
      */
     public void setColumnIdentifiers(List columnIdentifiers) {
-        this.columnIdentifiers.clear();
-        this.columnIdentifiers.addAll(columnIdentifiers);
-        notifyTableHeaderChanged();
+        if(columnIdentifiers!=null){
+            this.columnIdentifiers.clear();
+            this.columnIdentifiers.addAll(columnIdentifiers);
+            notifyTableHeaderChanged();
+        }
     }
 }

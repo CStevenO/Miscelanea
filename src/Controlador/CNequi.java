@@ -52,11 +52,14 @@ public class CNequi {
         return nequi.consultarMovimiento();
     }
     public boolean Actualizar(List<MNequi> todos) {
-        for(MNequi red:todos){
-            if(!Actualizar(red)){
-                return false;
+        if(todos!=null){
+            for(MNequi red:todos){
+                if(!Actualizar(red)){
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 }

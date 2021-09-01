@@ -101,16 +101,18 @@ public class MNequi {
         }
     }
     public void calcular(MNequi anterior){
-        if(fecha==null){
-            fecha = new Date(Calendar.getInstance().getTime().getTime());
-        }
-        saldo = recargas - retiros + anterior.getSaldo();
-        caja = anterior.getCaja()+retiros-recargas+ingreso-egreso;
-        if(ingreso>0){
-            new CNequi().setTope(fecha, new CNequi().getTope()+ingreso);
-        }
-        if(egreso>0){
-            new CNequi().setTope(fecha, new CNequi().getTope()-egreso);
+        if(anterior!=null){
+            if(fecha==null){
+                fecha = new Date(Calendar.getInstance().getTime().getTime());
+            }
+            saldo = recargas - retiros + anterior.getSaldo();
+            caja = anterior.getCaja()+retiros-recargas+ingreso-egreso;
+            if(ingreso>0){
+                new CNequi().setTope(fecha, new CNequi().getTope()+ingreso);
+            }
+            if(egreso>0){
+                new CNequi().setTope(fecha, new CNequi().getTope()-egreso);
+            }
         }
     }
 }

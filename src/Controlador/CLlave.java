@@ -49,11 +49,14 @@ public class CLlave {
         return llave.setPorcentaje(fecha, "llave", porcentaje);
     }
     public boolean Actualizar(List<MTuLlave> todos) {
-        for(MTuLlave red:todos){
-            if(!Actualizar(red)){
-                return false;
+        if(todos!=null){
+            for(MTuLlave red:todos){
+                if(!Actualizar(red)){
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 }

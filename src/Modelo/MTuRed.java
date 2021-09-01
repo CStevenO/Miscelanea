@@ -41,20 +41,22 @@ public class MTuRed extends MRecargas{
         }
     }
     public void calcular(MTuRed anterior){
-        String plataforma = "tuRed";
-        if(getFecha()==null){
-            setFecha(new Date(Calendar.getInstance().getTime().getTime()));
-        }
-        setDebe((long) (getPagado() + (new CTuRed().getPorcentaje(plataforma)*getPagado()) - getRecargado() + anterior.getDebe()));
-        setSaldo(getRecargado() - getVentas() + anterior.getSaldo());
-        setGanancias((long) (new CTuRed().getPorcentaje(plataforma)*getRecargado()));
-        setCaja(getVentas()-getPagado()+anterior.getCaja()-getRetiro());
-        setSugerencia((long) ((new CTuRed().getTope(plataforma)-getSaldo()-getDebe())/(1+new CTuRed().getPorcentaje(plataforma))));
-        if(getRetiro()>getCaja()-getSugerencia() && getRetiro()!=0){
-            new CTuRed().setTope(getFecha(), plataforma, new CTuRed().getTope(plataforma)+getCaja()-getSugerencia()-getRetiro());
-        }
-        else if(getRetiro()<0){
-            new CTuRed().setTope(getFecha(), plataforma, new CTuRed().getTope(plataforma)-getRetiro());
+        if(anterior!=null){
+            String plataforma = "tuRed";
+            if(getFecha()==null){
+                setFecha(new Date(Calendar.getInstance().getTime().getTime()));
+            }
+            setDebe((long) (getPagado() + (new CTuRed().getPorcentaje(plataforma)*getPagado()) - getRecargado() + anterior.getDebe()));
+            setSaldo(getRecargado() - getVentas() + anterior.getSaldo());
+            setGanancias((long) (new CTuRed().getPorcentaje(plataforma)*getRecargado()));
+            setCaja(getVentas()-getPagado()+anterior.getCaja()-getRetiro());
+            setSugerencia((long) ((new CTuRed().getTope(plataforma)-getSaldo()-getDebe())/(1+new CTuRed().getPorcentaje(plataforma))));
+            if(getRetiro()>getCaja()-getSugerencia() && getRetiro()!=0){
+                new CTuRed().setTope(getFecha(), plataforma, new CTuRed().getTope(plataforma)+getCaja()-getSugerencia()-getRetiro());
+            }
+            else if(getRetiro()<0){
+                new CTuRed().setTope(getFecha(), plataforma, new CTuRed().getTope(plataforma)-getRetiro());
+            }
         }
     }
 }

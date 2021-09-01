@@ -28,11 +28,14 @@ public class CTuRed extends CRecarga<MTuRed>{
     }
     @Override
     public boolean Actualizar(List<MTuRed> todos) {
-        for(MTuRed red:todos){
-            if(!Actualizar(red)){
-                return false;
+        if(todos!=null){
+            for(MTuRed red:todos){
+                if(!Actualizar(red)){
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 }
