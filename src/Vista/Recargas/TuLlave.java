@@ -4,6 +4,8 @@ import Controlador.CLlave;
 import Modelo.MTuLlave;
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -318,6 +320,20 @@ public class TuLlave extends javax.swing.JFrame {
                 recarga.setCaja(Long.parseLong(txtCaja.getText()));
                 recarga.calcular();
                 boolean reca = new CLlave().Actualizar(recarga);
+                Date actual = new Date(Calendar.getInstance().getTime().getTime());
+                List<MTuLlave> todos = new CLlave().ConsultarRango(recarga.getFecha(), actual);
+                int i=0;
+                while(i<todos.size()){
+                    if(i==0){
+                        todos.get(i).calcular();
+                    }
+                    else{
+                        todos.get(i).calcular(todos.get(i-1));
+                    }
+                    i++;
+                }
+                boolean reca2 = new CLlave().Actualizar(todos);
+                reca = reca||reca2;
                 String mensaje = reca?"Tu Llave Registrado":"Tu Llave NO Registrado";
                 limpiar();
                 JOptionPane.showMessageDialog(this,mensaje);

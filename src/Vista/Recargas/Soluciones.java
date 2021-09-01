@@ -5,6 +5,8 @@ import Controlador.CSoluciones;
 import Modelo.MSoluciones;
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -447,6 +449,20 @@ public class Soluciones extends javax.swing.JFrame {
                 recarga.setGananciaFac(Long.parseLong(txtGFac.getText()));
                 recarga.calcular();
                 boolean reca = new CSoluciones().Actualizar(recarga);
+                Date actual = new Date(Calendar.getInstance().getTime().getTime());
+                List<MSoluciones> todos = new CSoluciones().ConsultarRango(recarga.getFecha(), actual);
+                int i=0;
+                while(i<todos.size()){
+                    if(i==0){
+                        todos.get(i).calcular();
+                    }
+                    else{
+                        todos.get(i).calcular(todos.get(i-1));
+                    }
+                    i++;
+                }
+                boolean reca2 = new CSoluciones().Actualizar(todos);
+                reca = reca||reca2;
                 String mensaje = reca?"Recarga Actualizada":"Recarga NO Actualizada";
                 limpiar();
                 JOptionPane.showMessageDialog(this,mensaje);

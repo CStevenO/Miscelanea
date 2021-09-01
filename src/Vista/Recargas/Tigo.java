@@ -4,6 +4,8 @@ import Controlador.CTigo;
 import Modelo.MTigo;
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -406,6 +408,20 @@ public class Tigo extends javax.swing.JFrame {
                 recarga.setGananciasSim(Long.parseLong(txtSim.getText()));
                 recarga.calcular();
                 boolean reca = new CTigo().Actualizar(recarga);
+                Date actual = new Date(Calendar.getInstance().getTime().getTime());
+                List<MTigo> todos = new CTigo().ConsultarRango(recarga.getFecha(), actual);
+                int i=0;
+                while(i<todos.size()){
+                    if(i==0){
+                        todos.get(i).calcular();
+                    }
+                    else{
+                        todos.get(i).calcular(todos.get(i-1));
+                    }
+                    i++;
+                }
+                boolean reca2 = new CTigo().Actualizar(todos);
+                reca = reca||reca2;
                 String mensaje = reca?"Recarga Actualizada":"Recarga NO Actualizada";
                 limpiar();
                 JOptionPane.showMessageDialog(this,mensaje);
