@@ -4,6 +4,8 @@ import Controlador.CNequi;
 import Modelo.MNequi;
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -412,6 +414,20 @@ public class Nequi extends javax.swing.JFrame {
                 recarga.setEgreso(Long.parseLong(txtEgreso.getText()));
                 recarga.calcular();
                 boolean reca = new CNequi().Actualizar(recarga);
+                Date actual = new Date(Calendar.getInstance().getTime().getTime());
+                List<MNequi> todos = new CNequi().ConsultarRango(recarga.getFecha(), actual);
+                int i=0;
+                while(i<todos.size()){
+                    if(i==0){
+                        todos.get(i).calcular();
+                    }
+                    else{
+                        todos.get(i).calcular(todos.get(i-1));
+                    }
+                    i++;
+                }
+                boolean reca2 = new CNequi().Actualizar(todos);
+                reca = reca||reca2;
                 String mensaje = reca?"Nequi Actualizado":"Nequi NO Actualizado";
                 limpiar();
                 JOptionPane.showMessageDialog(this,mensaje);
